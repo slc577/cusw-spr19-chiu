@@ -15,9 +15,23 @@ void setup() {
 void draw() {
   fill(255);
   background(0);
-  circle(mouseX, mouseY, 30);
   
   for (Person p : people) {
+    p.update();
     p.drawPerson();
+  }
+}
+
+void mousePressed() {
+  for (Person p : people) {
+    if (p.selectionEvent()) {
+      break;
+    }
+  }
+}
+
+void mouseReleased() {
+  for (Person p : people) {
+    p.locked = false;
   }
 }
