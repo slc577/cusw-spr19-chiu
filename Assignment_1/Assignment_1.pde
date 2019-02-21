@@ -33,3 +33,16 @@ void draw() {
     r.render();
   }
 }
+
+void keyPressed(){
+  if(key == CODED)
+  {
+    if (keyCode == LEFT) {
+      ripplePeriod = max(300, ripplePeriod - 50);
+    }
+
+    else if(keyCode == RIGHT) {
+      ripplePeriod = min(10000, ripplePeriod + 50);
+    }
+  }
+}
