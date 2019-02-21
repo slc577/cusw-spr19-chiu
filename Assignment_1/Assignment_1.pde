@@ -9,6 +9,7 @@ ArrayList<Ripple> rippleList;
 void setup() {
   size(640, 360);
   frameRate(60);
+  background(255);
   
   previousTime = 0;
   ripplePeriod = 1000;
@@ -19,6 +20,8 @@ void setup() {
 }
 
 void draw() {
+  background(255);
+
   if (millis() - previousTime > ripplePeriod) {
     previousTime = millis();
     nextColor = (nextColor + colorRate) % 255;
@@ -32,6 +35,11 @@ void draw() {
     r.update();
     r.render();
   }
+
+  fill(255, 66, 92);
+  textSize(16);
+  text(String.format("Period: %d ms", ripplePeriod), 10, 20);
+  text(String.format("Ripple Count: %d", rippleList.size()), 10, 40);
 }
 
 void keyPressed(){
