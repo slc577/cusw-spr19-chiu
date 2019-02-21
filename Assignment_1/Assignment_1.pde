@@ -18,5 +18,11 @@ void draw() {
     previousTime = millis();
     
     // create another ripple
+    Ripple newRipple = new Ripple(mouseX, mouseY);
+    rippleList.add(newRipple);
+  }
+
+  for (Ripple r : rippleList) {
+    r.render();
   }
 }
