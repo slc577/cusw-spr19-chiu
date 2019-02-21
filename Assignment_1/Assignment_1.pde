@@ -3,13 +3,14 @@ int ripplePeriod;
 int colorRate;
 
 int nextColor;
+int backgroundColor;
 
 ArrayList<Ripple> rippleList;
 
 void setup() {
   size(640, 360);
   frameRate(60);
-  background(255);
+  backgroundColor = 255;
   
   previousTime = 0;
   ripplePeriod = 1000;
@@ -20,8 +21,7 @@ void setup() {
 }
 
 void draw() {
-  background(255);
-
+  background(backgroundColor);
   if (millis() - previousTime > ripplePeriod) {
     previousTime = millis();
     nextColor = (nextColor + colorRate) % 255;
@@ -31,6 +31,22 @@ void draw() {
     rippleList.add(newRipple);
   }
 
+  // remove ripples that have filled screen
+  int removeCount = 0;
+  for (Ripple r : rippleList) {
+    if (r.screenFilled()) {
+      removeCount++;
+    }
+    else {
+      break;
+    }
+  }
+
+  for (int i = 0; i < removeCount; i++) {
+    backgroundColor = rippleList.remove(0).getColor();
+  }
+
+  // update remaining ripples
   for (Ripple r : rippleList) {
     r.update();
     r.render();
