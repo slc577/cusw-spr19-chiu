@@ -2,11 +2,14 @@ class Ripple {
   private float centerX;
   private float centerY;
   private float radius;
+
   private float growthRate;
+  private color rippleColor;
   
-  Ripple(float x, float y) {
+  Ripple(float x, float y, color rippleColor) {
     this.centerX = x;
     this.centerY = y;
+    this.rippleColor = rippleColor;
     
     this.radius = 50;
     this.growthRate = 5;
@@ -14,7 +17,7 @@ class Ripple {
 
   void render() {
     noStroke();
-    fill(244, 66, 92);
+    fill(rippleColor);
     circle(this.centerX, this.centerY, this.radius);
   }
 }
