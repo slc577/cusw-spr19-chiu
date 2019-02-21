@@ -12,7 +12,11 @@ class Ripple {
     this.rippleColor = rippleColor;
     
     this.radius = 50;
-    this.growthRate = 5;
+    this.growthRate = 1;
+  }
+
+  void update() {
+    this.radius = this.radius + this.growthRate;
   }
 
   void render() {

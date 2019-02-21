@@ -29,6 +29,7 @@ void draw() {
   }
 
   for (Ripple r : rippleList) {
+    r.update();
     r.render();
   }
 }
