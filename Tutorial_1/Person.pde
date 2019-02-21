@@ -15,6 +15,18 @@ class Person {
     this.locked = false;
   }
   
+  String getYear() {
+    return this.year;
+  }
+  
+  float getX() {
+    return this.screenLocation.x;
+  }
+  
+  float getY() {
+    return this.screenLocation.y;
+  }
+  
   boolean hoverEvent() {
     float distX = abs(mouseX - screenLocation.x);
     float distY = abs(mouseY - screenLocation.y);
