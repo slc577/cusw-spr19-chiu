@@ -38,4 +38,16 @@ void setup(){
 
 void draw(){
   image(backgroundImage, 0, 0);
+
+  for (Way badRoad : badRoads) {
+    badRoad.draw();
+  }
+
+  for (Way busRoute : busRoutes) {
+    busRoute.draw();
+  }
+
+  for (POI busStop : busStops) {
+    busStop.draw();
+  }
 }
