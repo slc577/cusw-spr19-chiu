@@ -5,6 +5,10 @@ ArrayList<POI> busStops;
 ArrayList<Way> busRoutes;
 ArrayList<Way> badRoads;
 
+boolean showStops;
+boolean showRoutes;
+boolean showRoads;
+
 // constants
 float POI_RADIUS = 6;
 color POI_COLOR = #4BA3C3;
@@ -31,6 +35,11 @@ void setup(){
   BAD_CONDITIONS.add("poor");
   BAD_CONDITIONS.add("intolerable");
 
+  // set all features to invisible by default
+  showStops = false;
+  showRoutes = false;
+  showRoads = false;
+
   // load JSON data
   JSONArray areaFeatures = loadJSONFeatures("data/gis/boston_unfiltered.json");
   parsePOIData(areaFeatures);
@@ -39,15 +48,38 @@ void setup(){
 void draw(){
   image(backgroundImage, 0, 0);
 
-  for (Way badRoad : badRoads) {
-    badRoad.draw();
+  if (showRoads) {
+    for (Way badRoad : badRoads) {
+      badRoad.draw();
+    }
   }
 
-  for (Way busRoute : busRoutes) {
-    busRoute.draw();
+  if (showRoutes) {
+    for (Way busRoute : busRoutes) {
+      busRoute.draw();
+    }
   }
 
-  for (POI busStop : busStops) {
-    busStop.draw();
+  if (showStops) {
+    for (POI busStop : busStops) {
+      busStop.draw();
+    }
+  }
+}
+
+void keyPressed(){
+  if(key == CODED)
+  {
+    if (keyCode == LEFT) {
+      showRoutes = !showRoutes;
+    }
+
+    else if(keyCode == RIGHT) {
+      showRoads = !showRoads;
+    }
+
+    else if(keyCode == UP) {
+      showStops = !showStops;
+    }
   }
 }
