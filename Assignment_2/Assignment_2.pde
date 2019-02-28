@@ -22,6 +22,7 @@ ArrayList<String> BAD_CONDITIONS;
 
 void setup(){
   size(1000, 675);
+  frameRate(40);
   mercatorMap = new MercatorMap(width, height, 42.3883, 42.3354, -71.1210, -71.0069, 0); // Boston
   backgroundImage = loadBackground("data/images/boston_dark.png");
 
@@ -65,6 +66,20 @@ void draw(){
       busStop.draw();
     }
   }
+
+  fill(0);
+  noStroke();
+  rect(width-150, height-200, 125, 70);
+  textSize(16);
+
+  fill(POI_COLOR);
+  text("Bus Stops", width-145, height-180);
+
+  fill(BUS_ROUTE_COLOR);
+  text("Bus Routes", width-145, height-160);
+
+  fill(ROAD_COLOR);
+  text("Bad Roads", width-145, height-140);
 }
 
 void keyPressed(){
