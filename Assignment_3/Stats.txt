@@ -1,7 +1,15 @@
 What case study area did you pick and why?
 
+I studied the BlueBike trip data in Boston, mostly because I couldn't get the U.S. Census data to export through QGIS. Other than that, I like how BlueBike makes their data extra clean. I looked at rider data for only a handful of stations to keep the visualizations less cluttered. I also extracted trips during morning peak hours, because I felt most of those riders would be commuting to work.
+
 What metrics did you pick and why?
+
+I looked at user quantity, age, and gender, because those are the only demographics that BlueBike records.
 
 What statistical test did you use and why?
 
+I used a Chi-Square test, because I wanted to see if certain bike stations were more or less associated with different genders.
+
 What was it's result (again not graded for accuracy)?
+
+Removing the data point by the airport (since only 1 rider went there), I got a p-value of 1.64022e-8, which implies there is a heavy association between gender and bike station usage.

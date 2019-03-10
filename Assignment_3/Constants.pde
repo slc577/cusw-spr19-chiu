@@ -20,6 +20,8 @@ final int STATION_LON = 3;
 
 // bike station ids
 final int AIRPORT_ID = 214;
+final int BU_CENTRAL_ID = 10;
+final int CENTRAL_SQ_ID = 68;
 final int COPLEY_ID = 36;
 final int KENDALL_ID = 189;
 final int LECHMERE_ID = 90;
@@ -41,3 +43,13 @@ final int BIKE_ID = 11;
 final int USER_TYPE = 12;
 final int BIRTH_YEAR = 13;
 final int GENDER = 14;
+
+// visualizations
+final float MAX_RADIUS = 30;
+final float MIN_RADIUS = 10;
+final boolean Y_AXIS = true;
+final boolean X_AXIS = false;
+final color MIN_GENDER_COLOR = #FFFFFF;
+final color MAX_GENDER_COLOR = #231651;
+final color MIN_AGE_COLOR = #FF9F82;
+final color MAX_AGE_COLOR = #540804;
