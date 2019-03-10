@@ -9,10 +9,21 @@ final float MAP_BOTTOM = 42.3354;
 final float MAP_LEFT = -71.1210;
 final float MAP_RIGHT = -71.0069;
 
+// peak hour
+final int MORNING_PEAK_START = 6;
+final int MORNING_PEAK_END = 10;
+
 // bike station csv column indices
 final int STATION_NAME = 1;
 final int STATION_LAT = 2;
 final int STATION_LON = 3;
+
+// bike station ids
+final int AIRPORT_ID = 214;
+final int COPLEY_ID = 36;
+final int KENDALL_ID = 189;
+final int LECHMERE_ID = 90;
+final int SOUTH_STATION_ID = 22;
 
 // bike trip csv column indices
 final int TRIP_DURATION = 0;

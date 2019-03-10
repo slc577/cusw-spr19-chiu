@@ -6,8 +6,8 @@ PImage loadBackground(String imageFileName) {
   return background;
 }
 
-ArrayList<Station> loadStations(Table stationsTable) {
-  ArrayList<Station> stations = new ArrayList<Station>();
+HashMap<String, Station> loadStations(Table stationsTable) {
+  HashMap<String, Station> stationsMap = new HashMap<String, Station>();
   for (int rowCount = 1; rowCount < stationsTable.getRowCount(); rowCount++) {
     TableRow row = stationsTable.getRow(rowCount);
 
@@ -22,7 +22,37 @@ ArrayList<Station> loadStations(Table stationsTable) {
     }
 
     String stationName = row.getString(STATION_NAME);
-    stations.add(new Station(stationName, stationLat, stationLon, 5, #B1E5F2));
+    stationsMap.put(stationName, new Station(stationName, stationLat, stationLon, 5, #B1E5F2));
   }
-  return stations;
+  return stationsMap;
+}
+
+void parseTrips(Table tripTable) {
+  for (int rowCount = 1; rowCount < tripTable.getRowCount(); rowCount++) {
+    TableRow row = tripTable.getRow(rowCount);
+
+    // only consider data for selected stations
+    int endStationId = row.getInt(END_STATION_ID);
+    if (endStationId != AIRPORT_ID && endStationId != COPLEY_ID && endStationId != KENDALL_ID && endStationId != LECHMERE_ID && endStationId != SOUTH_STATION_ID) {
+      continue;
+    }
+
+    Time startTime = new Time(row.getString(START_TIME));
+    if (startTime.hour > MORNING_PEAK_END) {
+      continue; // this trip cannot end before peak hour ends
+    }
+
+    Time endTime = new Time(row.getString(STOP_TIME));
+    if (endTime.hour < MORNING_PEAK_START) {
+      continue;
+    }
+
+    String stationName = row.getString(END_STATION_NAME);
+    if (!stations.containsKey(stationName)) {
+      continue;
+    }
+
+    Trip t = new Trip(endTime.year - row.getInt(BIRTH_YEAR), row.getInt(GENDER) );
+    stations.get(stationName).addTrip(t);
+  }
 }

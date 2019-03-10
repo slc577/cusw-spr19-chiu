@@ -1,6 +1,6 @@
 MercatorMap mercatorMap;
 PImage backgroundImage;
-ArrayList<Station> stations;
+HashMap<String, Station> stations;
 
 void setup() {
   size(1000, 675);
@@ -11,13 +11,15 @@ void setup() {
 
   Table stationsTable = loadTable(bikeStationsCSV);
   stations = loadStations(stationsTable);
-  println(stations.size());
+
+  Table tripsTable = loadTable(bikeTripsCSV);
+  parseTrips(tripsTable);
 }
 
 void draw() {
   image(backgroundImage, 0, 0);
 
-  for (Station s : stations) {
+  for (Station s : stations.values()) {
     s.draw();
   }
 }
