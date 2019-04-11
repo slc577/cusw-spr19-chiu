@@ -1,28 +1,46 @@
-ArrayList<Vehicle> traffic;
-ArrayList<Light> lights;
-Vehicle car;
-Route road;
-Timer carTimer;
+Traffic trafficTop;
+Traffic trafficBot;
+Traffic trafficMid;
 
-// graphics constants
+Light lightTop;
+Light lightBot;
+
+// agent rendering constants
+final float WIDTH = 1100;
+final float HEIGHT = 700;
 final color BG_COLOR = color(200);
 final color CAR_COLOR = color(255, 0, 0);
 final color ROAD_COLOR = color(0);
-final float ROAD_WIDTH = 30;
+final float ROAD_WIDTH = 15;
 final color GREEN_LIGHT = color(66, 244, 140, 200);
 final color RED_LIGHT = color(244, 92, 65, 200);
 
 // road variables
-final float[] JUNCTION_X = {200, 200, 900, 900, 500, 500};
-final float[] JUNCTION_Y = {-30, 150, 150, 400, 400, 730};
+final float[] JUNCTION_X_TOP = {30, WIDTH - 30};
+final float[] JUNCTION_Y_TOP = {HEIGHT / 3, HEIGHT / 3};
 
-float ARRIVAL_RADIUS = 10;
-float SPEED_LIMIT = 10;
+final float[] JUNCTION_X_BOT = {WIDTH - 30, 30};
+final float[] JUNCTION_Y_BOT = {HEIGHT * 2 / 3, HEIGHT * 2 / 3};
 
-// traffic light variables
-final float[] LIGHT_X = {450, 500};
-final float[] LIGHT_Y = {150, 400};
+final float[] JUNCTION_X_MID = {WIDTH / 2, WIDTH / 2};
+final float[] JUNCTION_Y_MID = {30, HEIGHT - 30};
 
 // car constants
-final float CAR_WIDTH = 20;
-final float CAR_HEIGHT = 50;
+final float CAR_WIDTH = 10;
+final float CAR_HEIGHT = 25;
+
+// movement constants
+final float SPEED_LIMIT_TOP = 10;
+final float SPEED_LIMIT_BOT = 15;
+final float SPEED_LIMIT_MID = 5;
+
+final float ARRIVAL_RADIUS = 10;
+final float MIN_HEADWAY = CAR_HEIGHT * 1.25;
+final float TARGET_HEADWAY = CAR_HEIGHT * 4;
+final float MIN_SPAWN_TIME_MS = 300;
+
+// UI variables
+boolean pause = false;
+boolean selectLightTop = false;
+boolean selectLightBot = false;
+boolean selectGreen = true;

@@ -9,7 +9,7 @@ class Route {
   }
 
   PVector get(int index) {
-    return this.waypoints.get(index).getVector();
+    return this.waypoints.get(index).getLoc();
   }
   
   int size() {

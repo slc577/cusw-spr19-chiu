@@ -18,8 +18,16 @@ class Waypoint {
     this.fillColor = fillColor;
   }
 
-  PVector getVector() {
+  PVector getLoc() {
     return new PVector(this.locX, this.locY);
+  }
+  
+  float getDistance(PVector point) {
+    return PVector.sub(this.getLoc(), point).mag();
+  }
+  
+  void setFillColor(color fillColor) {
+    this.fillColor = fillColor;
   }
 
   void render() {

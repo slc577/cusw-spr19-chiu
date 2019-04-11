@@ -1,10 +1,12 @@
 class Vehicle {
   private final Route route;
-  private final ArrayList<Light> lights;
+  private final Light[] lights;
   private final float vWidth, vHeight;
   private final color fillColor;
   
   private final int id;
+  private int idAhead;
+  private int idBehind;
 
   private PVector loc;
   private PVector destination;
@@ -14,9 +16,11 @@ class Vehicle {
   private float angleToDest;
   private PVector vectToDest;
   
-  
-  public Vehicle(int id, Route route, ArrayList<Light> lights, float vWidth, float vHeight, color fillColor) {
+  public Vehicle(int id, Route route, Light[] lights, float vWidth, float vHeight, color fillColor) {
     this.id = id;
+    this.idAhead = -1;
+    this.idBehind = -1;
+    
     this.route = route;
     this.lights = lights;
     this.vWidth = vWidth;
@@ -33,57 +37,91 @@ class Vehicle {
     this.angleToDest = this.getAngleToDest(this.vectToDest);
   }
   
+  int getId() {
+    return this.id;
+  }
+  
+  int getIdAhead() {
+    return this.idAhead;
+  }
+  
+  void setIdAhead(int idAhead) {
+    this.idAhead = idAhead;
+  }
+  
+  int getIdBehind() {
+    return this.idBehind;
+  }
+  
+  void setIdBehind(int idBehind) {
+    this.idBehind = idBehind;
+  }
+  
   PVector getLoc() {
     return new PVector(loc.x, loc.y);
   }
   
-  private float getVelocity() {
-    if (this.id > 0) {
-      Vehicle carAhead = traffic.get(this.id - 1);
-      float distance = PVector.sub(carAhead.getLoc(), this.loc).mag();
-      
-      if (distance < 100) {
-        float dist = max(distance - 55, 0);
-        return (dist / 45.0) * SPEED_LIMIT;
-      }
-    }
-    
-    
-    
-    return SPEED_LIMIT;
+  float getDistance(PVector point) {
+    return PVector.sub(this.getLoc(), point).mag();
   }
-
-  public boolean moveToDest() {
-    float velocity = this.getVelocity();
-    if (velocity != SPEED_LIMIT) {
-      println(velocity);
+  
+  Light getNextLight() {
+    return this.lights[lightIndex];
+  }
+  
+  private float getSlowdown(float distance) {
+    if (distance < TARGET_HEADWAY) {
+      float dist = max(distance - MIN_HEADWAY, 0);
+      return (dist / (TARGET_HEADWAY - MIN_HEADWAY)) * 1;
     }
     
-    if (velocity <= 0) {
-      return true;
+    return 1;
+  }
+  
+  private float getVelocity(float speedLimit, boolean reverse) {
+    if (this.lightIndex >= this.lights.length) {
+      return speedLimit;
+    }
+    // calculate velocity using upcoming traffic light
+    final Light nextLight = this.getNextLight();
+    if ( nextLight.isGreen()^reverse ) {
+      return speedLimit;
     }
     
+    // next light is red
+    final float distance = nextLight.getDistance(this.loc);
+    return speedLimit * this.getSlowdown(distance);
+  }
+  
+  private float getVelocity(float speedLimit, boolean reverse, Vehicle ahead) {
+    final float distanceFromCarAhead = ahead.getDistance(this.loc);
+    final float velocity = speedLimit * this.getSlowdown(distanceFromCarAhead);
+    return min(velocity, this.getVelocity(speedLimit, reverse));
+  }
+  
+  public boolean moveToDest(float velocity, boolean reverse) {
     PVector stepVect = new PVector(this.vectToDest.x, this.vectToDest.y).setMag(velocity);
     this.loc.add(stepVect);
 
     this.vectToDest = PVector.sub(this.destination, this.loc);
     this.angleToDest = this.getAngleToDest(this.vectToDest);
     
-    // check if vehicle has approached traffic light
-    if (this.lightIndex < 2 && PVector.sub(this.lights.get(lightIndex).getVector(), this.loc).mag() < 50) {
+    // check if vehicle has approached next traffic light
+    if (this.lightIndex < this.lights.length && (this.getNextLight().isGreen()^reverse) && this.getNextLight().getDistance(this.loc) < 50) {
       this.lightIndex++;
     }
 
+    // check if vehicle has approached next node
     if (this.vectToDest.mag() < ARRIVAL_RADIUS) {
       this.destIndex++;
       
       if (this.destIndex >= this.route.size()) {
-        return false;
+        return true;
       }
       this.destination = this.route.get(this.destIndex);
     }
     
-    return true;
+    return false;
   }
 
   public void render() {
