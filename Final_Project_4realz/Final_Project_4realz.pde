@@ -11,6 +11,8 @@ void setup() {
   for (int i = 0; i < globals.NUM_BUS_STOPS_BETWEEN+3; i++) {
     globals.BUS_STOPS.add(globals.MIT_X + i * distanceBetweenStops);
   }
+  
+  globals.RIDESHARE_TIMERS.add(new Timer(globals.MIN_RIDESHARE_SPAWN_TIME_MS, globals.MAX_RIDESHARE_SPAWN_TIME_MS));
 
   //globals.TRAFFIC_BUS.vehicles.put(-1, new Vehicle(globals.MIT_X+20, globals.LANE1_Y, 0, globals.TRAFFIC_BUS));
   //globals.TRAFFIC_BUS.vehicles.put(-2, new Vehicle(globals.MIT_X+20, globals.LANE2_Y, 0, globals.TRAFFIC_BUS));
@@ -38,9 +40,11 @@ void draw() {
   render(globals.TRAFFIC_RIDESHARE, 0, 350);
 
   // draw traffic
-  if (globals.TRAFFIC_BUS.vehicles.size() >= globals.MAX_VEHICLES) {
+  if (globals.TRAFFIC_BUS.vehicles.size() >= globals.MAX_VEHICLES)
     return;
-  }
+
+  if (globals.TRAFFIC_RIDESHARE.vehicles.size() >= globals.MAX_VEHICLES)
+    return;
 
   if (globals.VEHICLE_TIMER.trigger()) {
     boolean allClear = true;
@@ -60,9 +64,10 @@ void draw() {
 
     if (allClear && globals.BUS_TIMER.trigger()) {
       globals.TRAFFIC_BUS.spawnBus(VEHICLE_ID);
-    }
-    // else if rideshare timer triggers: spawn rideshare
-    else if (allClear) {
+    } else if (allClear && globals.RIDESHARE_TIMERS.size() > 0 && globals.RIDESHARE_TIMERS.get(0).trigger()) {
+      globals.TRAFFIC_RIDESHARE.spawnRideshare(VEHICLE_ID, random(1) > .5);
+      globals.RIDESHARE_TIMERS.remove(0);
+    } else if (allClear) {
       final boolean whichLane = random(1) > .5;
       globals.TRAFFIC_BUS.spawnCar(VEHICLE_ID, whichLane);
       globals.TRAFFIC_RIDESHARE.spawnCar(VEHICLE_ID, whichLane);

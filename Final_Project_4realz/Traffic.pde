@@ -10,12 +10,17 @@ class Traffic {
   }
 
   void spawnCar(int vehicleID, boolean whichLane) {
-    final float laneY = whichLane ? globals.LANE1_Y : globals.LANE2_Y;
-    vehicles.put(vehicleID, new Vehicle(globals.START_X, laneY, globals.SPEED_LIMIT, this));
+    final float lane = whichLane ? globals.LANE1_Y : globals.LANE2_Y;
+    vehicles.put(vehicleID, new Vehicle(globals.START_X, lane, globals.SPEED_LIMIT, this));
   }
 
   void spawnBus(int vehicleID) {
     vehicles.put(vehicleID, new Bus(globals.START_X, globals.LANE2_Y, globals.SPEED_LIMIT, this));
+  }
+  
+  void spawnRideshare(int vehicleID, boolean whichLane) {
+    final float lane = whichLane ? globals.LANE1_Y : globals.LANE2_Y;
+    vehicles.put(vehicleID, new Rideshare(globals.START_X, lane, globals.SPEED_LIMIT, this));
   }
 
   void update() {

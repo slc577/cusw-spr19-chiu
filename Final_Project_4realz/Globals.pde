@@ -5,6 +5,7 @@ public class Globals {
   final color BG_COLOR = color(200);
   final color CAR_COLOR = color(255, 0, 0);
   final color BUS_COLOR = color(255);
+  final color RIDESHARE_COLOR = color(255, 255, 0);
 
   // car constants
   final float VEHICLE_WIDTH = 10;
@@ -19,7 +20,7 @@ public class Globals {
   final float LANE_WIDTH = VEHICLE_WIDTH * 2;
 
   // traffic constants
-  final float SPEED_LIMIT = 2;
+  final float SPEED_LIMIT = 1.5;
   final float ACCELERATION = 0.04;
   final float SWITCH_SPEED = SPEED_LIMIT * 0.7;
   final float MIN_HEADWAY = CAR_LENGTH * 0.25;
@@ -39,11 +40,17 @@ public class Globals {
   // timer constants
   final int MIN_VEHICLE_SPAWN_TIME_MS = 150;
   final int MAX_VEHICLE_SPAWN_TIME_MS = 300;
+  final Timer VEHICLE_TIMER = new Timer(MIN_VEHICLE_SPAWN_TIME_MS, MAX_VEHICLE_SPAWN_TIME_MS);
+  
   final int MIN_BUS_SPAWN_TIME_MS = 10000;
   final int MAX_BUS_SPAWN_TIME_MS = 15000;
-  final Timer VEHICLE_TIMER = new Timer(MIN_VEHICLE_SPAWN_TIME_MS, MAX_VEHICLE_SPAWN_TIME_MS);
   final Timer BUS_TIMER = new Timer(MIN_BUS_SPAWN_TIME_MS, MAX_BUS_SPAWN_TIME_MS);
-
-  final int MIN_BUS_STOP_WAIT_MS = 1300;
-  final int MAX_BUS_STOP_WAIT_MS = 2000;
+  final int MIN_BUS_STOP_WAIT_MS = 2000;
+  final int MAX_BUS_STOP_WAIT_MS = 3000;
+  
+  final int MIN_RIDESHARE_SPAWN_TIME_MS = 3000;
+  final int MAX_RIDESHARE_SPAWN_TIME_MS = 8000;
+  final ArrayList<Timer> RIDESHARE_TIMERS = new ArrayList<Timer>();
+  final int MIN_RIDESHARE_WAIT_MS = 700;
+  final int MAX_RIDESHARE_WAIT_MS = 1500;
 }
