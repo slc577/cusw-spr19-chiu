@@ -7,6 +7,7 @@ class Vehicle {
 
   private PVector loc;
   private PVector vectToDest;
+  private boolean GASGASGAS;
 
   public Vehicle(float locX, float locY, float speed) {
     this.finalDest = new PVector(globals.END_X, locY);
@@ -19,6 +20,7 @@ class Vehicle {
     this.loc = new PVector(locX, locY);
 
     this.vectToDest = PVector.sub(this.currentDest, this.loc);
+    this.GASGASGAS = false;
   }
 
   public Vehicle(float locX, float locY, float speed, color fillColor) {
@@ -32,7 +34,7 @@ class Vehicle {
       if (v == this)
         continue;
 
-      if (v.loc.y != this.loc.y)
+      if ( (v.loc.y < 0) != (this.loc.y < 0) )
         continue;
 
       if (v.loc.x < this.loc.x)
@@ -46,13 +48,46 @@ class Vehicle {
     return minDistance;
   }
 
+  private boolean canSwitch(float aheadX, float behindX) {
+    for (final Vehicle v : globals.TRAFFIC.vehicles.values()) {
+      if (v == this)
+        continue;
+
+      if ( (v.loc.y < 0) == (this.loc.y < 0) )
+        continue;
+
+      if (v.loc.x + v.vLength/2 > behindX && v.loc.x - v.vLength/2 < behindX)
+        return false;
+
+      if (v.loc.x - v.vLength/2 < aheadX && v.loc.x - v.vLength/2 > behindX)
+        return false;
+    }
+
+    return true;
+  }
+
+  private void updateDest(float targetX, float targetY) {
+    this.GASGASGAS = !this.GASGASGAS;
+    this.currentDest = new PVector(targetX, targetY);
+    this.finalDest = new PVector(this.finalDest.x, targetY);
+  }
+
   private float getSpeed() {
+    if (GASGASGAS)
+      return globals.SWITCH_SPEED;
+
     final float obstacleDistance = getObstacleDistance();
 
     if (obstacleDistance < globals.SLOWDOWN_HEADWAY) {
       final float dist = max(obstacleDistance - globals.MIN_HEADWAY, 0);
-      final float desiredSpeed = dist / (globals.SLOWDOWN_HEADWAY - globals.MIN_HEADWAY) * globals.SPEED_LIMIT;
 
+      final float targetX = this.loc.x + globals.LANE_WIDTH * 2;
+      if (obstacleDistance > globals.SWITCH_HEADWAY && canSwitch(targetX + this.vLength/2 * globals.MIN_HEADWAY, this.loc.x - this.vLength / 2)) {
+        this.updateDest(targetX, this.finalDest.y * -1);
+        return globals.SWITCH_SPEED;
+      }
+
+      final float desiredSpeed = dist / (globals.SLOWDOWN_HEADWAY - globals.MIN_HEADWAY) * globals.SPEED_LIMIT;
       if (desiredSpeed <= this.speed) {
         return desiredSpeed;
       }
@@ -62,13 +97,18 @@ class Vehicle {
   }
 
   public boolean moveToDest(int id) {
-    if (id == -1) {
+    if (id < 0) {
       return false;
     }
 
     // check if vehicle has approached final destination
     if (this.finalDest.x <= this.loc.x) {
       return true;
+    }
+
+    // check if vehicle has approached current destination
+    if (this.currentDest.x <= this.loc.x) {
+      this.updateDest(this.finalDest.x, this.finalDest.y);
     }
 
     this.speed = this.getSpeed();
@@ -79,15 +119,33 @@ class Vehicle {
     return false;
   }
 
+  private float getAngleToDest() {
+    float rawAngle = PVector.angleBetween(new PVector(0, -1), this.vectToDest);
+    final int sign = vectToDest.x > 0 ? 1 : -1;
+    return sign * rawAngle + PI;
+  }
+
   public void render() {
+    pushMatrix();
+    translate(this.loc.x, this.loc.y);
+    rotate(this.getAngleToDest());
+
     noStroke();
     fill(fillColor);
-    rect(this.loc.x, this.loc.y, vLength, vWidth);
+    rect(0, 0, vWidth, vLength);
+    // triangle(-10, -5, 10, -5, 0, 50); // uncomment for angle testing
+    popMatrix();
   }
 
   public void render(float locX, float locY) {
+    pushMatrix();
+    translate(locX, locY);
+    rotate(this.getAngleToDest());
+
     noStroke();
     fill(fillColor);
-    rect(locX, locY, vLength, vWidth);
+    rect(0, 0, vWidth, vLength);
+    // triangle(-10, -5, 10, -5, 0, 50); // uncomment for angle testing
+    popMatrix();
   }
 }

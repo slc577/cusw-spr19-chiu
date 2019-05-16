@@ -6,8 +6,10 @@ void setup() {
   frameRate(60);
   rectMode(CENTER);
 
-  // globals.TRAFFIC.vehicles.put(-1, new Vehicle(globals.WIDTH / 2, globals.LANE1_Y, 0));
-  // globals.TRAFFIC.vehicles.put(1, new Vehicle(0, globals.LANE1_Y, 0));
+  globals.TRAFFIC.vehicles.put(-1, new Vehicle(globals.WIDTH / 2, globals.LANE1_Y, 0));
+  globals.TRAFFIC.vehicles.put(-2, new Vehicle(globals.WIDTH / 2 + globals.CAR_LENGTH * 4, globals.LANE2_Y, 0));
+  globals.TRAFFIC.vehicles.put(-3, new Vehicle(globals.WIDTH / 2 + globals.CAR_LENGTH * 8, globals.LANE1_Y, 0));
+  globals.TRAFFIC.vehicles.put(1, new Vehicle(0, globals.LANE1_Y, 0));
 }
 
 void draw() {
@@ -20,10 +22,10 @@ void draw() {
   rect(width/2, 150, width, globals.CAR_WIDTH * 4);
 
   // draw traffic
-  if (globals.TRAFFIC.vehicles.size() < globals.MAX_VEHICLES && globals.CAR_TIMER.trigger()) {
-    globals.TRAFFIC.spawn(VEHICLE_ID);
-    updateId();
-  }
+  //if (globals.TRAFFIC.vehicles.size() < globals.MAX_VEHICLES && globals.CAR_TIMER.trigger()) {
+  //  globals.TRAFFIC.spawn(VEHICLE_ID);
+  //  updateId();
+  //}
 
   globals.TRAFFIC.update();
   render(globals.TRAFFIC, 0, 100);
