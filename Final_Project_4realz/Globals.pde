@@ -10,19 +10,17 @@ public class Globals {
   final float CAR_LENGTH = 15;
 
   // road variables
-  final PVector START_TOP = new PVector(30, 100);
-  final PVector START_BOT = new PVector(30, 100+CAR_WIDTH*1.5);
-
-  final PVector END_TOP = new PVector(WIDTH - 30, 100);
-  final PVector END_BOT = new PVector(WIDTH - 30, 100+CAR_WIDTH*1.5);
+  final float START_X = 30;
+  final float END_X = WIDTH - 30;
+  final float LANE1_Y = 100;
 
   // movement constants
-  final float SPEED_LIMIT = 1.5;
-
-  final float ARRIVAL_RADIUS = 10;
-  final float MIN_SPAWN_TIME_MS = 300;
+  final float SPEED_LIMIT = 10;
+  final float MIN_HEADWAY = CAR_LENGTH * 0.25;
+  final float SLOWDOWN_HEADWAY = CAR_LENGTH * 10;
 
   final HashMap<Integer, Vehicle> VEHICLES = new HashMap<Integer, Vehicle>();
   final int MAX_VEHICLES = 10000;
   final Timer TIMER = new Timer(500, 1000);
+  final float MIN_SPAWN_TIME_MS = 300;
 }
