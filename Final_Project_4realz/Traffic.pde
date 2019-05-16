@@ -9,9 +9,13 @@ class Traffic {
     return this.vehicles.get(id);
   }
 
-  void spawn(int vehicleID, boolean whichLane) {
+  void spawnCar(int vehicleID, boolean whichLane) {
     final float laneY = whichLane ? globals.LANE1_Y : globals.LANE2_Y;
     vehicles.put(vehicleID, new Vehicle(globals.START_X, laneY, globals.SPEED_LIMIT, this));
+  }
+
+  void spawnBus(int vehicleID) {
+    vehicles.put(vehicleID, new Bus(globals.START_X, globals.LANE2_Y, globals.SPEED_LIMIT, this));
   }
 
   void update() {
@@ -28,5 +32,9 @@ class Traffic {
     for (int id : vehiclesToRemove) {
       vehicles.remove(id);
     }
+  }
+
+  ArrayList<Vehicle> getVehicles() {
+    return new ArrayList<Vehicle>(this.vehicles.values());
   }
 }

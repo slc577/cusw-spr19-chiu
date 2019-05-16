@@ -1,4 +1,5 @@
 class Vehicle {
+  protected final float originalLane;
   protected PVector finalDest;
   protected PVector currentDest;
   protected float speed;
@@ -12,6 +13,7 @@ class Vehicle {
   protected final Traffic traffic;
 
   public Vehicle(float locX, float locY, float speed, Traffic traffic) {
+    this.originalLane = locY;
     this.finalDest = new PVector(globals.END_X, locY);
     this.currentDest = new PVector(globals.END_X, locY);
     this.speed = speed;
@@ -26,13 +28,17 @@ class Vehicle {
     this.GASGASGAS = false;
   }
 
+  protected boolean sameSign(float a, float b) {
+    return (a < 0) == (b < 0);
+  }
+
   protected float getObstacleDistance() {
     float minDistance = Float.POSITIVE_INFINITY;
-    for (final Vehicle v : traffic.vehicles.values()) {
+    for (final Vehicle v : traffic.getVehicles()) {
       if (v == this)
         continue;
 
-      if ( (v.loc.y < 0) != (this.loc.y < 0) )
+      if ( !sameSign(v.loc.y, this.loc.y) )
         continue;
 
       if (v.loc.x < this.loc.x)
@@ -47,11 +53,11 @@ class Vehicle {
   }
 
   protected boolean canSwitch(float aheadX, float behindX) {
-    for (final Vehicle v : traffic.vehicles.values()) {
+    for (final Vehicle v : traffic.getVehicles()) {
       if (v == this)
         continue;
 
-      if ( (v.loc.y < 0) == (this.loc.y < 0) )
+      if ( sameSign(v.loc.y, this.loc.y) )
         continue;
 
       if (v.loc.x + v.vLength/2 > behindX && v.loc.x - v.vLength/2 < behindX)
@@ -71,16 +77,23 @@ class Vehicle {
   }
 
   protected float getSpeed() {
-    if (GASGASGAS)
+    if (this.GASGASGAS)
       return globals.SWITCH_SPEED;
 
     final float obstacleDistance = getObstacleDistance();
 
+    final float targetX = this.loc.x + globals.LANE_WIDTH * 2;
+    final boolean canSwitch = canSwitch(targetX + this.vLength/2, this.loc.x - this.vLength*1.5);
+    //if ( !sameSign(this.originalLane, this.finalDest.y) && obstacleDistance > globals.SLOWDOWN_HEADWAY*2 && canSwitch) {
+    //    this.updateDest(targetX, this.finalDest.y * -1);
+    //    return globals.SWITCH_SPEED;
+    //  }
+
     if (obstacleDistance < globals.SLOWDOWN_HEADWAY) {
       final float dist = max(obstacleDistance - globals.MIN_HEADWAY, 0);
 
-      final float targetX = this.loc.x + globals.LANE_WIDTH * 2;
-      if (obstacleDistance > globals.SWITCH_HEADWAY && canSwitch(targetX + this.vLength/2 * globals.MIN_HEADWAY, this.loc.x - this.vLength / 2)) {
+      //final float targetX = this.loc.x + globals.LANE_WIDTH * 2;
+      if (obstacleDistance > globals.SWITCH_HEADWAY && canSwitch) {
         this.updateDest(targetX, this.finalDest.y * -1);
         return globals.SWITCH_SPEED;
       }
@@ -91,7 +104,7 @@ class Vehicle {
       }
     }
 
-    return min(globals.SPEED_LIMIT, this.speed + 0.05);
+    return min(globals.SPEED_LIMIT, this.speed + globals.ACCELERATION);
   }
 
   public boolean moveToDest(int id) {
@@ -109,7 +122,7 @@ class Vehicle {
       this.updateDest(this.finalDest.x, this.finalDest.y);
     }
 
-    this.speed = this.getSpeed();
+    this.speed = max(this.getSpeed(), 0);
     PVector stepVect = new PVector(this.vectToDest.x, this.vectToDest.y).setMag(this.speed);
     this.loc.add(stepVect);
     this.vectToDest = PVector.sub(this.currentDest, this.loc);

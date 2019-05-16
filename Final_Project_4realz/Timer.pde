@@ -1,24 +1,23 @@
 class Timer {
   private int waitTime;
   private final int maxWaitTime;
-  private int previousTime;
+  private float minWaitTimeMs;
 
-  Timer(int waitTime, int maxWaitTime) {
-    this.waitTime = waitTime;
+  Timer(int minWaitTimeMs, int maxWaitTime) {
     this.maxWaitTime = maxWaitTime;
-    this.previousTime = millis();
+    this.minWaitTimeMs = minWaitTimeMs;
+    setWaitTime();
   }
 
-  boolean trigger(float minSpawnTimeMs) {
-    if (millis() - this.previousTime >= this.waitTime) {
-      this.previousTime = millis();
-      this.setWaitTime( (int)random(minSpawnTimeMs, this.maxWaitTime) );
+  boolean trigger() {
+    if (millis() >= this.waitTime) {
+      this.setWaitTime();
       return true;
     }
     return false;
   }
 
-  private void setWaitTime(int newWaitTime) {
-    this.waitTime = newWaitTime;
+  private void setWaitTime() {
+    this.waitTime = millis() + (int)random(this.minWaitTimeMs, this.maxWaitTime);
   }
 }
