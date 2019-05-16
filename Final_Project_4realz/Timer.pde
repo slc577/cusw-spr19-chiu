@@ -9,10 +9,10 @@ class Timer {
     this.previousTime = millis();
   }
 
-  boolean trigger() {
+  boolean trigger(float minSpawnTimeMs) {
     if (millis() - this.previousTime >= this.waitTime) {
       this.previousTime = millis();
-      this.setWaitTime( (int)random(globals.MIN_SPAWN_TIME_MS, this.maxWaitTime) );
+      this.setWaitTime( (int)random(minSpawnTimeMs, this.maxWaitTime) );
       return true;
     }
     return false;

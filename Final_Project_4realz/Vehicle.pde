@@ -1,22 +1,22 @@
 class Vehicle {
-  private PVector finalDest;
-  private PVector currentDest;
-  private float speed;
-  private final float vWidth, vLength;
-  private color fillColor;
+  protected PVector finalDest;
+  protected PVector currentDest;
+  protected float speed;
+  protected float vWidth, vLength;
+  protected color fillColor;
 
-  private PVector loc;
-  private PVector vectToDest;
-  private boolean GASGASGAS;
+  protected PVector loc;
+  protected PVector vectToDest;
+  protected boolean GASGASGAS;
 
-  private final Traffic traffic;
+  protected final Traffic traffic;
 
   public Vehicle(float locX, float locY, float speed, Traffic traffic) {
     this.finalDest = new PVector(globals.END_X, locY);
     this.currentDest = new PVector(globals.END_X, locY);
     this.speed = speed;
     this.traffic = traffic;
-    this.vWidth = globals.CAR_WIDTH;
+    this.vWidth = globals.VEHICLE_WIDTH;
     this.vLength = globals.CAR_LENGTH;
     this.fillColor = globals.CAR_COLOR;
 
@@ -26,12 +26,7 @@ class Vehicle {
     this.GASGASGAS = false;
   }
 
-  public Vehicle(float locX, float locY, float speed, Traffic traffic, color fillColor) {
-    this(locX, locY, speed, traffic);
-    this.fillColor = fillColor;
-  }
-
-  private float getObstacleDistance() {
+  protected float getObstacleDistance() {
     float minDistance = Float.POSITIVE_INFINITY;
     for (final Vehicle v : traffic.vehicles.values()) {
       if (v == this)
@@ -51,7 +46,7 @@ class Vehicle {
     return minDistance;
   }
 
-  private boolean canSwitch(float aheadX, float behindX) {
+  protected boolean canSwitch(float aheadX, float behindX) {
     for (final Vehicle v : traffic.vehicles.values()) {
       if (v == this)
         continue;
@@ -69,13 +64,13 @@ class Vehicle {
     return true;
   }
 
-  private void updateDest(float targetX, float targetY) {
+  protected void updateDest(float targetX, float targetY) {
     this.GASGASGAS = !this.GASGASGAS;
     this.currentDest = new PVector(targetX, targetY);
     this.finalDest = new PVector(this.finalDest.x, targetY);
   }
 
-  private float getSpeed() {
+  protected float getSpeed() {
     if (GASGASGAS)
       return globals.SWITCH_SPEED;
 
@@ -122,7 +117,7 @@ class Vehicle {
     return false;
   }
 
-  private float getAngleToDest() {
+  protected float getAngleToDest() {
     float rawAngle = PVector.angleBetween(new PVector(0, -1), this.vectToDest);
     final int sign = vectToDest.x > 0 ? 1 : -1;
     return sign * rawAngle + PI;
