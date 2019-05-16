@@ -22,9 +22,11 @@ public class Globals {
   final float MIN_HEADWAY = CAR_LENGTH * 0.25;
   final float SLOWDOWN_HEADWAY = CAR_LENGTH * 2;
   final float SWITCH_HEADWAY = CAR_LENGTH;
-  final Traffic TRAFFIC = new Traffic();
+
+  final Traffic TRAFFIC_BUS = new Traffic();
+  final Traffic TRAFFIC_RIDESHARE = new Traffic();
 
   final int MAX_VEHICLES = 10000;
   final Timer CAR_TIMER = new Timer(500, 700);
-  final float MIN_SPAWN_TIME_MS = 150;
+  final float MIN_SPAWN_TIME_MS = 100;
 }

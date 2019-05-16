@@ -9,10 +9,13 @@ class Vehicle {
   private PVector vectToDest;
   private boolean GASGASGAS;
 
-  public Vehicle(float locX, float locY, float speed) {
+  private final Traffic traffic;
+
+  public Vehicle(float locX, float locY, float speed, Traffic traffic) {
     this.finalDest = new PVector(globals.END_X, locY);
     this.currentDest = new PVector(globals.END_X, locY);
     this.speed = speed;
+    this.traffic = traffic;
     this.vWidth = globals.CAR_WIDTH;
     this.vLength = globals.CAR_LENGTH;
     this.fillColor = globals.CAR_COLOR;
@@ -23,14 +26,14 @@ class Vehicle {
     this.GASGASGAS = false;
   }
 
-  public Vehicle(float locX, float locY, float speed, color fillColor) {
-    this(locX, locY, speed);
+  public Vehicle(float locX, float locY, float speed, Traffic traffic, color fillColor) {
+    this(locX, locY, speed, traffic);
     this.fillColor = fillColor;
   }
 
   private float getObstacleDistance() {
     float minDistance = Float.POSITIVE_INFINITY;
-    for (final Vehicle v : globals.TRAFFIC.vehicles.values()) {
+    for (final Vehicle v : traffic.vehicles.values()) {
       if (v == this)
         continue;
 
@@ -49,7 +52,7 @@ class Vehicle {
   }
 
   private boolean canSwitch(float aheadX, float behindX) {
-    for (final Vehicle v : globals.TRAFFIC.vehicles.values()) {
+    for (final Vehicle v : traffic.vehicles.values()) {
       if (v == this)
         continue;
 

@@ -9,9 +9,9 @@ class Traffic {
     return this.vehicles.get(id);
   }
 
-  void spawn(int vehicleID) {
-    final float laneY = random(1) > .5 ? globals.LANE1_Y : globals.LANE2_Y;
-    vehicles.put(vehicleID, new Vehicle(globals.START_X, laneY, globals.SPEED_LIMIT));
+  void spawn(int vehicleID, boolean whichLane) {
+    final float laneY = whichLane ? globals.LANE1_Y : globals.LANE2_Y;
+    vehicles.put(vehicleID, new Vehicle(globals.START_X, laneY, globals.SPEED_LIMIT, this));
   }
 
   void update() {
