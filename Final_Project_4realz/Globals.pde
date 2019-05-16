@@ -10,14 +10,16 @@ public class Globals {
   final float CAR_LENGTH = 15;
 
   // road constants
-  final float START_X = 30;
-  final float END_X = WIDTH - 30;
-  final float LANE1_Y = 100;
+  final float START_X = 0;
+  final float END_X = WIDTH * 2;
+  final float LANE1_Y = 0;
 
   // traffic constants
   final float SPEED_LIMIT = 10;
   final float MIN_HEADWAY = CAR_LENGTH * 0.25;
   final float SLOWDOWN_HEADWAY = CAR_LENGTH * 10;
+
+  // traffic variables
   final Traffic TRAFFIC = new Traffic();
 
   final int MAX_VEHICLES = 10000;

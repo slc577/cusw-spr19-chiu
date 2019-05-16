@@ -6,7 +6,8 @@ void setup() {
   frameRate(60);
   rectMode(CENTER);
 
-  globals.TRAFFIC.vehicles.put(-1, new Vehicle(width/2, globals.LANE1_Y, 0));
+  // globals.TRAFFIC.vehicles.put(-1, new Vehicle(globals.WIDTH / 2, globals.LANE1_Y, 0));
+  // globals.TRAFFIC.vehicles.put(1, new Vehicle(0, globals.LANE1_Y, 0));
 }
 
 void draw() {
@@ -18,7 +19,7 @@ void draw() {
   }
 
   globals.TRAFFIC.update();
-  globals.TRAFFIC.renderVehicles();
+  render(globals.TRAFFIC, 0, 100);
 }
 
 void updateId() {

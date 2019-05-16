@@ -22,8 +22,6 @@ class Vehicle {
   }
 
   private float getObstacleDistance() {
-    // return globals.START_X + 700 - this.loc.x - globals.CAR_LENGTH/2;
-
     float minDistance = Float.POSITIVE_INFINITY;
     for (final Vehicle v : globals.TRAFFIC.vehicles.values()) {
       if (v == this)
@@ -79,6 +77,12 @@ class Vehicle {
   public void render() {
     noStroke();
     fill(fillColor);
-    rect(loc.x, loc.y, vLength, vWidth);
+    rect(this.loc.x, this.loc.y, vLength, vWidth);
+  }
+
+  public void render(float locX, float locY) {
+    noStroke();
+    fill(fillColor);
+    rect(locX, locY, vLength, vWidth);
   }
 }

@@ -28,10 +28,4 @@ class Traffic {
       vehicles.remove(id);
     }
   }
-
-  void renderVehicles() {
-    for (Vehicle v : vehicles.values()) {
-      v.render();
-    }
-  }
 }
