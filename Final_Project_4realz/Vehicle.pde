@@ -11,6 +11,7 @@ class Vehicle {
   protected boolean GASGASGAS;
 
   protected final Traffic traffic;
+  protected final int spawnTime;
 
   public Vehicle(float locX, float locY, float speed, Traffic traffic) {
     this.originalLane = locY;
@@ -26,6 +27,11 @@ class Vehicle {
 
     this.vectToDest = PVector.sub(this.currentDest, this.loc);
     this.GASGASGAS = false;
+    this.spawnTime = millis();
+  }
+  
+  protected int currentWaitTimeMS() {
+    return millis() - this.spawnTime;
   }
 
   protected boolean sameSign(float a, float b) {
@@ -92,7 +98,6 @@ class Vehicle {
     if (obstacleDistance < globals.SLOWDOWN_HEADWAY) {
       final float dist = max(obstacleDistance - globals.MIN_HEADWAY, 0);
 
-      //final float targetX = this.loc.x + globals.LANE_WIDTH * 2;
       if (obstacleDistance > globals.SWITCH_HEADWAY && canSwitch) {
         this.updateDest(targetX, this.finalDest.y * -1);
         return globals.SWITCH_SPEED;

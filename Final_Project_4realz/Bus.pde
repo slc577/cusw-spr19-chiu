@@ -1,17 +1,18 @@
 class Bus extends Vehicle {
-  private int nextStopIndex;
-  private boolean atStop;
-  private final Timer stopTimer;
+  protected int nextStopIndex;
+  protected boolean atStop;
+  protected Timer stopTimer;
+  protected final ArrayList<Float> stops;
 
-  public Bus(float locX, float locY, float speed, Traffic traffic) {
+  public Bus(float locX, float locY, float speed, Traffic traffic, ArrayList<Float> stops) {
     super(locX, locY, speed, traffic);
+    this.stops = stops;
 
-    super.vWidth = globals.VEHICLE_WIDTH;
     super.vLength = globals.BUS_LENGTH;
     super.fillColor = globals.BUS_COLOR;
 
     this.nextStopIndex = 0;
-    this.currentDest = new PVector(globals.BUS_STOPS.get(this.nextStopIndex), this.finalDest.y);
+    this.currentDest = new PVector(stops.get(this.nextStopIndex), this.finalDest.y);
 
     this.atStop = false;
     this.stopTimer = new Timer(globals.MIN_BUS_STOP_WAIT_MS, globals.MAX_BUS_STOP_WAIT_MS);
@@ -45,8 +46,13 @@ class Bus extends Vehicle {
     if (this.atStop) {
       if (!this.stopTimer.trigger())
         return false;
-      else
+      else {
         this.atStop = false;
+        if (this.nextStopIndex == 1) {
+          globals.BUS_PASSENGERS.update(-(55 - (int)random(globals.MIN_BUS_CAPACITY, globals.MAX_BUS_CAPACITY)));
+        }
+      }
+
       return false;
     }
 
@@ -58,10 +64,10 @@ class Bus extends Vehicle {
     this.speed = this.atStop ? 0 : max(this.getSpeed(), 0);
 
     // check if vehicle has approached current destination
-    if (abs(this.currentDest.x - this.loc.x) < globals.CAR_LENGTH/2) {
+    if (this.currentDest.x < this.loc.x || abs(this.currentDest.x - this.loc.x) < globals.CAR_LENGTH/2) {
       this.atStop = true;
       this.nextStopIndex++;
-      this.currentDest = new PVector(globals.BUS_STOPS.get(this.nextStopIndex), this.finalDest.y);
+      this.currentDest = new PVector(stops.get(this.nextStopIndex), this.finalDest.y);
       this.stopTimer.setWaitTime();
     }
 
