@@ -6,8 +6,6 @@ class Vehicle {
   private final color fillColor;
 
   private PVector loc;
-
-  private float angleToDest;
   private PVector vectToDest;
 
   public Vehicle(float locX, float locY, float speed) {
@@ -21,14 +19,13 @@ class Vehicle {
     this.loc = new PVector(locX, locY);
 
     this.vectToDest = PVector.sub(this.currentDest, this.loc);
-    this.angleToDest = this.getAngleToDest(this.vectToDest);
   }
 
   private float getObstacleDistance() {
     // return globals.START_X + 700 - this.loc.x - globals.CAR_LENGTH/2;
 
     float minDistance = Float.POSITIVE_INFINITY;
-    for (final Vehicle v : globals.VEHICLES.values()) {
+    for (final Vehicle v : globals.TRAFFIC.vehicles.values()) {
       if (v == this)
         continue;
 
@@ -74,28 +71,14 @@ class Vehicle {
     this.speed = this.getSpeed();
     PVector stepVect = new PVector(this.vectToDest.x, this.vectToDest.y).setMag(this.speed);
     this.loc.add(stepVect);
-
     this.vectToDest = PVector.sub(this.currentDest, this.loc);
-    this.angleToDest = this.getAngleToDest(this.vectToDest);
 
     return false;
   }
 
   public void render() {
-    pushMatrix();
-    translate(this.loc.x, this.loc.y);
-    rotate(this.angleToDest);
-
     noStroke();
     fill(fillColor);
-    rect(0, 0, vWidth, vLength);
-    // triangle(-10, -5, 10, -5, 0, 50); // uncomment for angle testing
-    popMatrix();
-  }
-
-  private float getAngleToDest(PVector vectToDest) {
-    float rawAngle = PVector.angleBetween(new PVector(0, -1), vectToDest);
-    final int sign = vectToDest.x > 0 ? 1 : -1;
-    return sign * rawAngle + PI;
+    rect(loc.x, loc.y, vLength, vWidth);
   }
 }

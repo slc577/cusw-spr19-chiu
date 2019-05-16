@@ -9,18 +9,18 @@ public class Globals {
   final float CAR_WIDTH = 10;
   final float CAR_LENGTH = 15;
 
-  // road variables
+  // road constants
   final float START_X = 30;
   final float END_X = WIDTH - 30;
   final float LANE1_Y = 100;
 
-  // movement constants
+  // traffic constants
   final float SPEED_LIMIT = 10;
   final float MIN_HEADWAY = CAR_LENGTH * 0.25;
   final float SLOWDOWN_HEADWAY = CAR_LENGTH * 10;
+  final Traffic TRAFFIC = new Traffic();
 
-  final HashMap<Integer, Vehicle> VEHICLES = new HashMap<Integer, Vehicle>();
   final int MAX_VEHICLES = 10000;
-  final Timer TIMER = new Timer(500, 1000);
+  final Timer CAR_TIMER = new Timer(500, 1000);
   final float MIN_SPAWN_TIME_MS = 300;
 }
