@@ -3,7 +3,7 @@ class Vehicle {
   private PVector currentDest;
   private float speed;
   private final float vWidth, vLength;
-  private final color fillColor;
+  private color fillColor;
 
   private PVector loc;
   private PVector vectToDest;
@@ -19,6 +19,11 @@ class Vehicle {
     this.loc = new PVector(locX, locY);
 
     this.vectToDest = PVector.sub(this.currentDest, this.loc);
+  }
+
+  public Vehicle(float locX, float locY, float speed, color fillColor) {
+    this(locX, locY, speed);
+    this.fillColor = fillColor;
   }
 
   private float getObstacleDistance() {

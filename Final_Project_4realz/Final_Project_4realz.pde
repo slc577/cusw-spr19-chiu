@@ -13,8 +13,15 @@ void setup() {
 void draw() {
   background(globals.BG_COLOR);
 
+  // draw roads
+  noStroke();
+  fill(0);
+  rect(width/2, 100, width, globals.CAR_WIDTH * 4);
+  rect(width/2, 150, width, globals.CAR_WIDTH * 4);
+
+  // draw traffic
   if (globals.TRAFFIC.vehicles.size() < globals.MAX_VEHICLES && globals.CAR_TIMER.trigger()) {
-    globals.TRAFFIC.spawn();
+    globals.TRAFFIC.spawn(VEHICLE_ID);
     updateId();
   }
 

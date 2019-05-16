@@ -12,17 +12,16 @@ public class Globals {
   // road constants
   final float START_X = 0;
   final float END_X = WIDTH * 2;
-  final float LANE1_Y = 0;
+  final float LANE1_Y = -this.CAR_WIDTH;
+  final float LANE2_Y = this.CAR_WIDTH;
 
   // traffic constants
-  final float SPEED_LIMIT = 10;
+  final float SPEED_LIMIT = 2;
   final float MIN_HEADWAY = CAR_LENGTH * 0.25;
-  final float SLOWDOWN_HEADWAY = CAR_LENGTH * 10;
-
-  // traffic variables
+  final float SLOWDOWN_HEADWAY = CAR_LENGTH * 2;
   final Traffic TRAFFIC = new Traffic();
 
   final int MAX_VEHICLES = 10000;
   final Timer CAR_TIMER = new Timer(500, 1000);
-  final float MIN_SPAWN_TIME_MS = 300;
+  final float MIN_SPAWN_TIME_MS = 200;
 }
